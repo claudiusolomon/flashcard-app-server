@@ -7,6 +7,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 // get a list of all the flashcards
 flashcardRoutes.route("/flashcards").get(function (req, res) {
+    console.log("Get all documents")
     let dbConnection = req.app.locals.db;
     dbConnection
         .collection("flashcards")
@@ -19,6 +20,7 @@ flashcardRoutes.route("/flashcards").get(function (req, res) {
 
 // get a single flashcard by id
 flashcardRoutes.route("/flashcards/:id").get(function (req, res) {
+    console.log("Get document:", req.params.id)
     let dbConnection = req.app.locals.db;
     let myquery = { _id: ObjectId(req.params.id) };
     dbConnection
@@ -30,6 +32,7 @@ flashcardRoutes.route("/flashcards/:id").get(function (req, res) {
 
 // get flashcards by cardSet
 flashcardRoutes.route("/flashcards/cardSet/:cardSetName").get(function (req, res) {
+    console.log("Get all documents from card set:", req.params.cardSetName)
     let dbConnection = req.app.locals.db;
     let myquery = { cardSet: req.params.cardSetName };
     dbConnection
@@ -60,10 +63,10 @@ flashcardRoutes.route("/flashcards").post(function (req, res) {
 });
 
 // update a flashcard by id.
-flashcardRoutes.route("/flashcards").put(function (req, res) {
+flashcardRoutes.route("/flashcards/:id").put(function (req, res) {
+    console.log("Updating document:", req.params.id)
     let dbConnection = req.app.locals.db;
-    console.log("ID:", req.body._id)
-    let myquery = { _id: new ObjectId(req.body._id) };
+    let myquery = { _id: new ObjectId(req.params.id) };
     let newValues = {
         $set:{
             front: req.body.front,
@@ -81,6 +84,7 @@ flashcardRoutes.route("/flashcards").put(function (req, res) {
 
 // delete a flashcard by id
 flashcardRoutes.route("/flashcards/:id").delete((req, res) => {
+    console.log("Deleting document:", req.params.id)
     let dbConnection = req.app.locals.db;
     let myquery = { _id: ObjectId(req.params.id) };
     dbConnection
